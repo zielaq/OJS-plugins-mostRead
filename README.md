@@ -9,7 +9,7 @@ Plugin for the creation of a “most read articles” section in the OJS3.2 fron
 Functionality
 -------------
 1. Plugin need to be configured. Afrer turning plugin on there is need to add title of Most Read Articles Block and also the number of days from which the most read articles will be calculated
-2. The numbers of the articles is limited to 5. (
+2. The numbers of the articles is limited to 5.
 
 System requirements
 --------------------
