@@ -1,7 +1,7 @@
 Most Read Articles block plugin
 ===========
 Plug-in for version 3.2.1+ of OJS.
-v. 3.0.0.8
+v. 3.0.1.0
 ------------
 
 Plugin for the creation of a “most read articles” section in the OJS3.2 frontend sidebar.
