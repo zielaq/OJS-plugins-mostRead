@@ -11,10 +11,10 @@
 	<div class="content">
 		<span class="title">{$blockTitle}</span>
 			<ul class="most_read">
-			{foreach from=$resultMetrics item=article}
+			{foreach from=$resultMetrics item=submission}
 				<li class="most_read_article">
-					<div class="most_read_article_title"><a href="{url journal=$article.journalPath page="article" op="view" path=$article.articleId}">{$article.articleTitle}{if !empty($article.articleSubTitle)} {$article.articleSubTitle}{/if}</a></div>
-					<div class="most_read_article_journal"><span class="fa fa-eye"></span> {$article.metric}</div>
+					<div class="most_read_article_title"><a href="{url page="article" op="view" path=$submission.id}">{$submission.title}{if !empty($submission.subTitle)}: {$submission.subTitle}{/if}</a></div>
+					<div class="most_read_article_journal"><span class="fa fa-eye"></span> {$submission.metric}</div>
 				</li>
 			{/foreach}
 			</ul>

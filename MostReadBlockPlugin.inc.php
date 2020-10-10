@@ -97,20 +97,18 @@ class MostReadBlockPlugin extends BlockPlugin {
 	 */
 	function getContents($templateMgr, $request = null) {
 		$context = $request->getContext();
-		if (!$context) return '';
+		if (!$context) {
+			return '';
+		}
 
-		$metricsDao = DAORegistry::getDAO('MetricsDAO');
-		
 		$cacheManager = CacheManager::getManager();
-		$cache = $cacheManager->getCache($context->getId(), 'mostread' , array($this, '_cacheMiss'));
-
+		$cache = $cacheManager->getCache($context->getId(), 'mostRead_X' , array($this, '_cacheMiss'));
 		$daysToStale = 1;
-
 		if (time() - $cache->getCacheTime() > 60 * 60 * 24 * $daysToStale) {
 			$cache->flush();
 		}
 		$resultMetrics = $cache->getContents();
-
+		
 		$templateMgr->assign('resultMetrics', $resultMetrics);
 
 		$mostReadBlockTitle = unserialize($this->getSetting($context->getId(), 'mostReadBlockTitle'));
@@ -127,9 +125,7 @@ class MostReadBlockPlugin extends BlockPlugin {
 	 */
 	
 	function _cacheMiss($cache) {
-		$submissionDao = DAORegistry::getDAO('SubmissionDAO'); /* @var $submissionDao SubmissionDAO */
-		
-		$journalDao = DAORegistry::getDAO('JournalDAO');
+		$submissionDao = Application::getSubmissionDAO();
 	
 		$mostReadDays = (int) $this->getSetting($cache->context, 'mostReadDays');
 		if (empty($mostReadDays)){
@@ -154,18 +150,16 @@ class MostReadBlockPlugin extends BlockPlugin {
 		
 		$metricsDao = DAORegistry::getDAO('MetricsDAO'); /* @var $metricsDao MetricsDAO */
 		$result = $metricsDao->getMetrics(OJS_METRIC_TYPE_COUNTER, $column, $filter, $orderBy, $dbResultRange);
-		
 		foreach ($result as $resultRecord) {
 				$submissionId = $resultRecord[STATISTICS_DIMENSION_SUBMISSION_ID];
-				$article = $submissionDao->getById($submissionId);
-				
-		    $journal = $journalDao->getById($article->getJournalId());
-		    $articles[$submissionId]['journalPath'] = $journal->getPath();
-		    $articles[$submissionId]['articleId'] = $article->getBestArticleId();
-		    $articles[$submissionId]['articleTitle'] = $article->getLocalizedTitle();
-		    $articles[$submissionId]['metric'] = $resultRecord[STATISTICS_METRIC];
+				$submission = $submissionDao->getById($submissionId);
+		    
+		    $submissions[$submissionId]['id'] = $submission->getBestId();
+		    $submissions[$submissionId]['title'] = $submission->getLocalizedTitle();
+		    $submissions[$submissionId]['subTitle'] = $submission->getLocalizedSubTitle();
+		    $submissions[$submissionId]['metric'] = $resultRecord[STATISTICS_METRIC];
 		}
-		$cache->setEntireCache($articles);
+		$cache->setEntireCache($submissions);
 		return $result;
     }
 }
