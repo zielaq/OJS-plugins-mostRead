@@ -30,6 +30,10 @@
 			{fbvElement type="text" label="plugins.blocks.mostRead.settings.blockTitle" id="mostReadBlockTitle" value=$mostReadBlockTitle multilingual=true}
 		{/fbvFormSection}		
 
+		{fbvFormSection for="mostReadCount"}
+			{fbvElement type="text" label="plugins.blocks.mostRead.settings.count" id="mostReadCount" value=$mostReadCount}
+		{/fbvFormSection}
+
 	{/fbvFormArea}
 
 	{fbvFormButtons id="WGLSettingsFormSubmit" submitText="common.save" hideCancel=true}

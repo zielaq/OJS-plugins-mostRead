@@ -27,7 +27,6 @@ class MostReadSettingsForm extends Form {
 		parent::__construct($plugin->getTemplateResource('settingsForm.tpl'));
 		$this->setData('pluginName', $plugin->getName());
 
-		$this->addCheck(new FormValidator($this, 'mostReadDays', 'required', 'plugins.blocks.mostRead.settings.mostReadDaysRequired'));
 
 		$this->addCheck(new FormValidatorPost($this));
 		$this->addCheck(new FormValidatorCSRF($this));		
@@ -54,6 +53,7 @@ class MostReadSettingsForm extends Form {
 		$plugin = $this->plugin;
 		$contextId = $this->getContextId();
 		$mostReadBlockTitle = unserialize($plugin->getSetting($contextId, 'mostReadBlockTitle'));
+		$this->setData('mostReadCount', $plugin->getSetting($contextId, 'mostReadCount'));
 		$this->setData('mostReadDays', $plugin->getSetting($contextId, 'mostReadDays'));
 		$this->setData('mostReadBlockTitle', $mostReadBlockTitle);
 	}
@@ -62,7 +62,7 @@ class MostReadSettingsForm extends Form {
 	 * Assign form data to user-submitted data.
 	 */
 	function readInputData(){
-		$this->readUserVars(array('mostReadDays', 'mostReadBlockTitle'));
+		$this->readUserVars(array('mostReadDays', 'mostReadBlockTitle','mostReadCount'));
 	}
 
 	/**
@@ -82,6 +82,7 @@ class MostReadSettingsForm extends Form {
 		$mostReadBlockTitle = serialize($this->getData('mostReadBlockTitle'));
 
 		$plugin->updateSetting($contextId, 'mostReadDays', $this->getData('mostReadDays'), 'string');
+		$plugin->updateSetting($contextId, 'mostReadCount', $this->getData('mostReadCount'), 'string');
 		$plugin->updateSetting($contextId, 'mostReadBlockTitle', $mostReadBlockTitle, 'string');
 
 		# empty current cache

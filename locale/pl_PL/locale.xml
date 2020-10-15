@@ -14,10 +14,11 @@
 <locale name="pl_PL" full_name="Polski">
 	<message key="plugins.blocks.mostRead.displayName">Blok "Najczęściej czytane"</message>
 	<message key="plugins.blocks.mostRead.description">Ten plugin pokazuje najczęściej czytane w bocznej kolumnie.</message>
-  <message key="plugins.blocks.mostRead.blockTitle">Najczęściej czytane w ostatnim tygodniu</message>
+  <message key="plugins.blocks.mostRead.blockTitle">Najczęściej czytane</message>
 
   <message key="plugins.blocks.mostRead.settings.title">Ustawienia bloku "Najczęściej czytane"</message>
   <message key="plugins.blocks.mostRead.settings.days">Ilość dni</message>
   <message key="plugins.blocks.mostRead.settings.blockTitle">Tytuł bloku</message>
+  <message key="plugins.blocks.mostRead.settings.count">Ilość artykułów do wyświetlenia</message>
   <message key="plugins.blocks.mostRead.settings.saved">Ustawienia plugin "Najczęściej czytane" zostały zapisane</message>
 </locale>

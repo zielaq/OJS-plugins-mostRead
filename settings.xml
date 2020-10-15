@@ -17,12 +17,12 @@
 		<value>false</value>
 	</setting>
 	<setting type="int">
-		<name>seq</name>
-		<value>0</value>
+		<name>mostReadDays</name>
+		<value>7</value>
 	</setting>
 	<setting type="int">
-		<name>context</name>
-		<value>1</value><!-- BLOCK_CONTEXT_SIDEBAR -->
+		<name>mostReadCount</name>
+		<value>5</value>
 	</setting>
+	
 </plugin_settings>
-

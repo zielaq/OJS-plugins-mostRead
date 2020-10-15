@@ -107,6 +107,7 @@ class MostReadBlockPlugin extends BlockPlugin {
 		$cacheManager = CacheManager::getManager();
 		$cache = $cacheManager->getCache($context->getId(), 'mostRead_X' , array($this, '_cacheMiss'));
 		$daysToStale = 1;
+		
 		if (time() - $cache->getCacheTime() > 60 * 60 * 24 * $daysToStale) {
 			$cache->flush();
 		}
@@ -132,7 +133,7 @@ class MostReadBlockPlugin extends BlockPlugin {
 	
 		$mostReadDays = (int) $this->getSetting($cache->context, 'mostReadDays');
 		if (empty($mostReadDays)){
-			$mostReadDays = 120;
+			$mostReadDays = 7;
 		}
 		$dayString = "-" . $mostReadDays . " days";
 		$daysAgo = date('Ymd', strtotime($dayString));
@@ -149,15 +150,18 @@ class MostReadBlockPlugin extends BlockPlugin {
 		        STATISTICS_DIMENSION_SUBMISSION_ID,
 		);
 		import('lib.pkp.classes.db.DBResultRange');
-		$dbResultRange = new DBResultRange(5);
-		
+		$submissionCount = (int) $this->getSetting($cache->context, 'mostReadCount');
+		if (empty($submissionCount)){
+			$submissionCount = 5;
+		}
+		$dbResultRange = new DBResultRange($submissionCount);
 		$metricsDao = DAORegistry::getDAO('MetricsDAO'); /* @var $metricsDao MetricsDAO */
 		$result = $metricsDao->getMetrics(OJS_METRIC_TYPE_COUNTER, $column, $filter, $orderBy, $dbResultRange);
 		foreach ($result as $resultRecord) {
 				$submissionId = $resultRecord[STATISTICS_DIMENSION_SUBMISSION_ID];
 				$submission = $submissionDao->getById($submissionId);
 		    
-		    $submissions[$submissionId]['id'] = $submission->getBestId();
+		    $submissions[$submissionId]['id'] = $submission->getId();
 		    $submissions[$submissionId]['title'] = $submission->getLocalizedTitle();
 		    $submissions[$submissionId]['subTitle'] = $submission->getLocalizedSubTitle();
 		    $submissions[$submissionId]['metric'] = $resultRecord[STATISTICS_METRIC];
