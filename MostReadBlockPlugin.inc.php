@@ -75,6 +75,9 @@ class MostReadBlockPlugin extends BlockPlugin {
 				$settingsForm->initData();
 				return new JSONMessage(true, $settingsForm->fetch($request));
 			case 'save':
+				$cacheManager = CacheManager::getManager();
+				$cache = $cacheManager->getCache($context->getId(), 'mostRead_X' , array($this, '_cacheMiss'));
+				$cache->flush();
 				$settingsForm = new MostReadSettingsForm($this, $contextId);
 				$settingsForm->readInputData();
 				if ($settingsForm->validate()) {
