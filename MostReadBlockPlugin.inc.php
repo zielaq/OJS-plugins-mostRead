@@ -105,21 +105,22 @@ class MostReadBlockPlugin extends BlockPlugin {
 		}
 
 		$cacheManager = CacheManager::getManager();
-		$cache = $cacheManager->getCache($context->getId(), 'mostRead_X' , array($this, '_cacheMiss'));
-		$daysToStale = 1;
 		
+		$cache = $cacheManager->getCache($context->getId(), 'mostRead_X' , array($this, '_cacheMiss'));
+		$cache->flush();
+		$daysToStale = 1;
 		if (time() - $cache->getCacheTime() > 60 * 60 * 24 * $daysToStale) {
 			$cache->flush();
 		}
 		$resultMetrics = $cache->getContents();
-		
+		var_dump($resultMetrics);
 		$templateMgr->assign('resultMetrics', $resultMetrics);
 
 		$mostReadBlockTitle = unserialize($this->getSetting($context->getId(), 'mostReadBlockTitle'));
 		$locale = AppLocale::getLocale();
 		$blockTitle = $mostReadBlockTitle[$locale] ? $mostReadBlockTitle[$locale] : __('plugins.blocks.mostRead.settings.blockTitle');
 		$templateMgr->assign('blockTitle', $blockTitle);
-
+		
 		return parent::getContents($templateMgr, $request);
 	}
 
@@ -129,8 +130,9 @@ class MostReadBlockPlugin extends BlockPlugin {
 	 */
 	
 	function _cacheMiss($cache) {
-		$submissionDao = Application::getSubmissionDAO();
-	
+		
+		$submissionDao = DAORegistry::getDAO('SubmissionDAO');
+		
 		$mostReadDays = (int) $this->getSetting($cache->context, 'mostReadDays');
 		if (empty($mostReadDays)){
 			$mostReadDays = 7;
@@ -166,6 +168,7 @@ class MostReadBlockPlugin extends BlockPlugin {
 		    $submissions[$submissionId]['subTitle'] = $submission->getLocalizedSubTitle();
 		    $submissions[$submissionId]['metric'] = $resultRecord[STATISTICS_METRIC];
 		}
+		print_r($submissions);
 		$cache->setEntireCache($submissions);
 		return $result;
     }
