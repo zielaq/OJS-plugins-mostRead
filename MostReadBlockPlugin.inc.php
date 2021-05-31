@@ -168,7 +168,6 @@ class MostReadBlockPlugin extends BlockPlugin {
 		    $submissions[$submissionId]['subTitle'] = $submission->getLocalizedSubTitle();
 		    $submissions[$submissionId]['metric'] = $resultRecord[STATISTICS_METRIC];
 		}
-		print_r($submissions);
 		$cache->setEntireCache($submissions);
 		return $result;
     }
