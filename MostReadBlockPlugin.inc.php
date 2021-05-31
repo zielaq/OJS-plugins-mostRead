@@ -107,13 +107,13 @@ class MostReadBlockPlugin extends BlockPlugin {
 		$cacheManager = CacheManager::getManager();
 		
 		$cache = $cacheManager->getCache($context->getId(), 'mostRead_X' , array($this, '_cacheMiss'));
-		$cache->flush();
+
 		$daysToStale = 1;
 		if (time() - $cache->getCacheTime() > 60 * 60 * 24 * $daysToStale) {
 			$cache->flush();
 		}
 		$resultMetrics = $cache->getContents();
-		var_dump($resultMetrics);
+		
 		$templateMgr->assign('resultMetrics', $resultMetrics);
 
 		$mostReadBlockTitle = unserialize($this->getSetting($context->getId(), 'mostReadBlockTitle'));
